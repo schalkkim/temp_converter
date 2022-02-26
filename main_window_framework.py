@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 background_colour = "#F6B26B"
 button_colour = "#F4CCCC"
 entry_colour = "#FCE5CD"
+checkbox_colour = "#D9D9D9"
 
 # Define Window
 root = Tk()
@@ -36,8 +37,7 @@ temperature_converter_label = Label(top_frame, text="Temperature Converter", fg=
 temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
 instruction_label = Label(top_frame, text="Type in a number and push the 'convert' button to convert it.",
-                          fg="black", bg=background_colour, font=("Arial", 12, "italic"), wraplength=375,
-                          justify=LEFT)
+                          fg="black", bg=background_colour, font=("Arial", 12, "italic"), wraplength=375, justify=LEFT)
 instruction_label.grid(row=1, column=0, columnspan=3, padx=20, pady=5)
 
 centigrade_label = Label(middle_frame, text="Centigrade (°C)", fg="black", bg=background_colour,
@@ -47,6 +47,10 @@ centigrade_label.grid(row=1, column=0)
 fahrenheit_label = Label(middle_frame, text="Fahrenheit (°F)", fg="black", bg=background_colour,
                          font=("Arial", 11, "bold"), wraplength=100, justify=LEFT)
 fahrenheit_label.grid(row=1, column=2)
+
+formula_label = Label(bottom_frame, text="Formula", fg="black", bg=background_colour, font=("Arial", 11, "italic"),
+                      justify=CENTER)
+formula_label.grid(row=0, column=1, padx=(50, 100))
 
 # Define Entries and Variables
 centigrade_variable = DoubleVar()
@@ -70,14 +74,28 @@ fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=
                                    font=("Arial", 11))
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
-# Define Image and format it
-thermometer_image = Image.open("thermometer_image.png")
-resized_image = thermometer_image.resize((140, 150), Image.ANTIALIAS)
-image = ImageTk.PhotoImage(resized_image)
+view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
+                             font=("Arial", 11, "underline"), justify=LEFT, activebackground=background_colour)
+view_history_button.grid(row=2, column=0, padx=(10, 2), pady=(5, 10))
 
-image_label = Label(middle_frame, image=image, bd=0)
-image_label.image = image
-image_label.grid(row=0, column=1, rowspan=7, pady=5, padx=5)
+help_button = Button(bottom_frame, text="Help", fg="black", bg=background_colour, bd=0, font=("Arial", 11, "underline"),
+                     justify=RIGHT, activebackground=background_colour)
+help_button.grid(row=2, column=2, padx=(2, 10), pady=(5, 10))
+
+# Define Image and format it
+original_thermometer_image = Image.open("thermometer_image.png")
+resized_thermometer_image = original_thermometer_image.resize((140, 150), Image.ANTIALIAS)
+thermometer_image = ImageTk.PhotoImage(resized_thermometer_image)
+
+image_label = Label(middle_frame, image=thermometer_image, bd=0)
+image_label.image = thermometer_image
+image_label.grid(row=0, column=1, rowspan=7, padx=5)
+
+# Define Checkbutton
+rounded_number_checkbutton = Checkbutton(bottom_frame, text="Rounded number", fg="black", bg=background_colour,
+                                         font=("Arial", 11), justify=CENTER, bd=3, selectcolor=checkbox_colour,
+                                         activebackground=background_colour)
+rounded_number_checkbutton.grid(row=1, column=1, padx=(25, 75), pady=5)
 
 # End of window
 root.mainloop()
