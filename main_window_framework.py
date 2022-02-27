@@ -67,11 +67,11 @@ fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
 
 # Define Buttons
 centigrade_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
-                                   font=("Arial", 11))
+                                   font=("Arial", 11), activebackground="#EA9999")
 centigrade_convert_button.grid(row=3, column=0, pady=(5, 40), ipadx=2, ipady=2)
 
 fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
-                                   font=("Arial", 11))
+                                   font=("Arial", 11), activebackground="#EA9999")
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
 view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
