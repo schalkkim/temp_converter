@@ -65,9 +65,9 @@ def go_to_help():
     information_textvariable = StringVar()
     information_textvariable.set("""Enter a number into one of the boxes (either Centigrade or Fahrenheit), press convert to view the conversion which will appear in the other box (either Fahrenheit or Centigrade).
 
-    If an error appears, check that your number is in the format ‘7’ rather than ‘seven’. Also check that your number is not lower than absolute 0 (-273.15℃ or -459.67℉).
+If an error appears, check that your number is in the format ‘7’ rather than ‘seven’. Also check that your number is not lower than absolute 0 (-273.15℃ or -459.67℉).
 
-    To exit, press the ‘x’ at the top of the window, this will close the program.
+To exit, press the ‘x’ at the top of the window, this will close the program.
     """)
     information_label = Label(information_labels_frame, textvariable=information_textvariable, bg=box_colour, bd=0,
                               fg="black", font=("Arial", 11), wraplength=260, justify=LEFT)
@@ -80,9 +80,9 @@ def go_to_help():
     history_information_textvariable = StringVar()
     history_information_textvariable.set("""Press ‘View history’ to see your last 8 conversions. To view more you can export your history by pressing the ‘Export’ button. Once in that window type in your filename and press export. Your file will appear in the folder where this program is located. 
 
-    To clear your history, press the ‘Clear’ button. This will delete your history from the program, however, if you have a file saved, the history will not be deleted from there. You will have to delete the file by going to the folder it is located in and deleting it there.
+To clear your history, press the ‘Clear’ button. This will delete your history from the program, however, if you have a file saved, the history will not be deleted from there. You will have to delete the file by going to the folder it is located in and deleting it there.
 
-    When finished press the back button to return to the home window.""")
+When finished press the back button to return to the home window.""")
     history_information_label = Label(information_labels_frame, textvariable=history_information_textvariable,
                                       bg=box_colour, bd=0, fg="black", font=("Arial", 11), wraplength=260, justify=LEFT)
     history_information_label.grid(row=2, column=0)
