@@ -33,7 +33,24 @@ history_information_two.set("")
 
 history_information_two_label = Label(root, textvariable=history_information_two, fg="black", bg=background_colour,
                                       font=("Arial", 11), wraplength=50)
-history_information_two_label.grid(row=1, column=3, padx=5, pady=5)
+history_information_two_label.grid(row=1, column=2, padx=5, pady=5)
+
+# Define Buttons
+export_button = Button(root, text="Export", fg="black", bg=button_colour, width=8, font=("Arial", 11),
+                       activebackground=active_button_colour)
+export_button.grid(row=2, column=1, pady=5, ipadx=2, ipady=2)
+
+clear_button = Button(root, text="Clear", fg="black", bg=button_colour, width=8, font=("Arial", 11),
+                      activebackground=active_button_colour)
+clear_button.grid(row=2, column=2, pady=5, ipadx=2, ipady=2)
+
+back_button = Button(root, text="Back", fg="black", bg=background_colour, bd=0, font=("Arial", 11, "underline"),
+                     justify=LEFT, activebackground=background_colour)
+back_button.grid(row=3, column=1, pady=5, padx=5)
+
+help_button = Button(root, text="Help", fg="black", bg=background_colour, bd=0, font=("Arial", 11, "underline"),
+                     justify=RIGHT, activebackground=background_colour)
+help_button.grid(row=3, column=2, pady=5, padx=5)
 
 # Close Window
 root.mainloop()
