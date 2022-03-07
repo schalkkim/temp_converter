@@ -103,6 +103,14 @@ When finished press the back button to return to the home window.""")
     information_canvas.config(scrollregion=information_canvas.bbox("all"))
 
 
+# Celsius to Fahrenheit Function
+def celsius_to_fahrenheit():
+    centigrade = centigrade_variable.get()
+    centigrade = int(centigrade)
+    fahrenheit = (centigrade * 9/5) + 32
+    fahrenheit_variable.set(fahrenheit)
+
+
 # Define Frames
 # Groups the title, and the instructions
 top_frame = Frame(root, bg=background_colour)
@@ -152,7 +160,8 @@ fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
 
 # Define Buttons
 centigrade_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
-                                   font=("Arial", 11), activebackground=active_button_colour)
+                                   font=("Arial", 11), activebackground=active_button_colour,
+                                   command=celsius_to_fahrenheit)
 centigrade_convert_button.grid(row=3, column=0, pady=(5, 40), ipadx=2, ipady=2)
 
 fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
