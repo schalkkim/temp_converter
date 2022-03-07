@@ -33,7 +33,20 @@ file_name_variable = DoubleVar()
 file_name_variable.set("")
 file_name_entry = Entry(root, textvariable=file_name_variable, fg="black", bg=entry_colour, width=38,
                         font=("Arial", 11), justify=LEFT, bd=3)
-file_name_entry.grid(row=2, column=0, columnspan=2, pady=5, padx=5, ipadx=2, ipady=2)
+file_name_entry.grid(row=2, column=0, columnspan=2, pady=5, padx=10, ipadx=5, ipady=2)
+
+# Define Buttons
+export_button = Button(root, text="Export", fg="black", bg=button_colour, activebackground=active_button_colour,
+                       font=("Arial", 11), justify=CENTER, width=12)
+export_button.grid(row=3, column=0, columnspan=2, pady=20, padx=5, ipadx=2, ipady=2)
+
+back_button = Button(root, text="Back", fg="black", bg=background_colour, activebackground=background_colour,
+                     font=("Arial", 11, "underline"), justify=LEFT, bd=0)
+back_button.grid(row=4, column=0, pady=(0, 5), padx=5, sticky="w")
+
+help_button = Button(root, text="Help", fg="black", bg=background_colour, activebackground=background_colour,
+                     font=("Arial", 11, "underline"), justify=RIGHT, bd=0)
+help_button.grid(row=4, column=1, pady=(0, 5), padx=5, sticky="e")
 
 # Close Window
 root.mainloop()
