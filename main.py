@@ -1,6 +1,6 @@
 # Kim Schalk
 # 04/03/2022
-# Version 3 - Celsius to Fahrenheit
+# Version 4 - Fahrenheit to Celsius
 
 # Import Packages
 from tkinter import *
@@ -111,6 +111,14 @@ def celsius_to_fahrenheit():
     fahrenheit_variable.set(fahrenheit)
 
 
+# Fahrenheit to Celsius Function
+def fahrenheit_to_celsius():
+    fahrenheit = fahrenheit_variable.get()
+    fahrenheit = int(fahrenheit)
+    centigrade = (fahrenheit - 32) * 5/9
+    centigrade_variable.set(centigrade)
+
+
 # Define Frames
 # Groups the title, and the instructions
 top_frame = Frame(root, bg=background_colour)
@@ -165,7 +173,7 @@ centigrade_convert_button = Button(middle_frame, text="Convert", fg="black", bg=
 centigrade_convert_button.grid(row=3, column=0, pady=(5, 40), ipadx=2, ipady=2)
 
 fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
-                                   font=("Arial", 11), activebackground=active_button_colour)
+                                   font=("Arial", 11), activebackground=active_button_colour, command=fahrenheit_to_celsius)
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
 view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
