@@ -119,6 +119,34 @@ def fahrenheit_to_celsius():
     centigrade_variable.set(centigrade)
 
 
+# Round to last 0 in number Function
+def round_0s(last_converted):
+    number = last_converted.get()
+    # If a whole number, round to an integer
+    if number % 1 == 0:
+        number = int(number)
+    else:
+        number = str(number)
+        number_length = len(number)
+        # Remove extra zeros at the end
+        for zero in range(number_length):
+            if number[-zero] == "0":
+                number.pop()
+            else:
+                break
+        #
+        for decimal in range(number_length):
+            if number[decimal] == ".":
+                decimal_place = decimal
+        if number_length - (decimal_place + 1) < 4:
+            number = float(number)
+            print(number)
+        else:
+            number = float(number)
+            number = "{:.4f}".format(number)
+    last_converted.set(number)
+
+
 # Define Frames
 # Groups the title, and the instructions
 top_frame = Frame(root, bg=background_colour)
