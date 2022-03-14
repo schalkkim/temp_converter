@@ -6,6 +6,9 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
+# Variable for button last pressed
+last_button = 0
+
 # Colours for program
 background_colour = "#F6B26B"
 button_colour = "#F4CCCC"
@@ -105,6 +108,7 @@ When finished press the back button to return to the home window.""")
 
 # Celsius to Fahrenheit Function
 def celsius_to_fahrenheit():
+    last_button = 1
     centigrade = centigrade_variable.get()
     centigrade = int(centigrade)
     fahrenheit = (centigrade * 9/5) + 32
@@ -113,6 +117,7 @@ def celsius_to_fahrenheit():
 
 # Fahrenheit to Celsius Function
 def fahrenheit_to_celsius():
+    last_button = 2
     fahrenheit = fahrenheit_variable.get()
     fahrenheit = int(fahrenheit)
     centigrade = (fahrenheit - 32) * 5/9
@@ -134,13 +139,15 @@ def round_0s(last_converted):
                 number.pop()
             else:
                 break
-        #
+        # Find number of decimal places
         for decimal in range(number_length):
             if number[decimal] == ".":
                 decimal_place = decimal
+        # If less than 4dp, print number
         if number_length - (decimal_place + 1) < 4:
             number = float(number)
             print(number)
+        # If greater than 4dp, round to 4dp
         else:
             number = float(number)
             number = "{:.4f}".format(number)
