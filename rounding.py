@@ -6,9 +6,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
-# Variable for button last pressed
-last_button = 0
-
 # Colours for program
 background_colour = "#F6B26B"
 button_colour = "#F4CCCC"
@@ -22,6 +19,10 @@ root = Tk()
 root.title("Temperature Converter")
 # Design Window
 root.configure(bg=background_colour)
+
+# Variable for last convert button pressed
+global last_pressed
+last_pressed = 1
 
 
 # Define Functions
@@ -107,26 +108,40 @@ When finished press the back button to return to the home window.""")
 
 
 # Celsius to Fahrenheit Function
-def celsius_to_fahrenheit():
-    last_button = 1
+def celsius_to_fahrenheit(button):
+    global last_pressed
+    last_pressed = button
+    check = rounded_number_variable.get()
     centigrade = centigrade_variable.get()
     centigrade = int(centigrade)
     fahrenheit = (centigrade * 9/5) + 32
+    # Round or keep unrounded answer
+    if check == 0:
+        fahrenheit = unrounded(fahrenheit)
+    if check == 1:
+        fahrenheit = rounded(fahrenheit)
     fahrenheit_variable.set(fahrenheit)
 
 
 # Fahrenheit to Celsius Function
-def fahrenheit_to_celsius():
-    last_button = 2
+def fahrenheit_to_celsius(button):
+    global last_pressed
+    last_pressed = button
+    check = rounded_number_variable.get()
     fahrenheit = fahrenheit_variable.get()
     fahrenheit = int(fahrenheit)
     centigrade = (fahrenheit - 32) * 5/9
+    # Round or keep unrounded answer
+    if check == 0:
+        centigrade = unrounded(centigrade)
+    if check == 1:
+        centigrade = rounded(centigrade)
     centigrade_variable.set(centigrade)
 
 
 # Round to last 0 in number Function
-def round_0s(last_converted):
-    number = last_converted.get()
+def unrounded(to_round):
+    number = to_round
     # If a whole number, round to an integer
     if number % 1 == 0:
         number = int(number)
@@ -146,12 +161,31 @@ def round_0s(last_converted):
         # If less than 4dp, print number
         if number_length - (decimal_place + 1) < 4:
             number = float(number)
-            print(number)
         # If greater than 4dp, round to 4dp
         else:
             number = float(number)
             number = "{:.4f}".format(number)
-    last_converted.set(number)
+    return number
+
+
+def rounded(to_round):
+    number = to_round
+    number = round(number)
+    return number
+
+
+def check_round():
+    check = rounded_number_variable.get()
+    if check == 0:
+        if last_pressed == 1:
+            celsius_to_fahrenheit(1)
+        if last_pressed == 2:
+            fahrenheit_to_celsius(2)
+    if check == 1:
+        if last_pressed == 1:
+            fahrenheit_variable.set(rounded(fahrenheit_variable.get()))
+        if last_pressed == 2:
+            centigrade_variable.set(rounded(centigrade_variable.get()))
 
 
 # Define Frames
@@ -190,13 +224,13 @@ formula_label.grid(row=0, column=1, padx=(50, 100))
 
 # Define Entries and Variables
 centigrade_variable = DoubleVar()
-centigrade_variable.set("")
+centigrade_variable.set(0)
 centigrade_entry = Entry(middle_frame, textvariable=centigrade_variable, width=9, bg=entry_colour, fg="black",
                          font=("Arial", 11), justify=CENTER, bd=3)
 centigrade_entry.grid(row=2, column=0, pady=5, ipady=5, ipadx=5)
 
 fahrenheit_variable = DoubleVar()
-fahrenheit_variable.set("")
+fahrenheit_variable.set(0)
 fahrenheit_entry = Entry(middle_frame, textvariable=fahrenheit_variable, width=9, bg=entry_colour, fg="black",
                          font=("Arial", 11), justify=CENTER, bd=3)
 fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
@@ -204,11 +238,12 @@ fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
 # Define Buttons
 centigrade_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
                                    font=("Arial", 11), activebackground=active_button_colour,
-                                   command=celsius_to_fahrenheit)
+                                   command=lambda: celsius_to_fahrenheit(1))
 centigrade_convert_button.grid(row=3, column=0, pady=(5, 40), ipadx=2, ipady=2)
 
 fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
-                                   font=("Arial", 11), activebackground=active_button_colour, command=fahrenheit_to_celsius)
+                                   font=("Arial", 11), activebackground=active_button_colour,
+                                   command=lambda: fahrenheit_to_celsius(2))
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
 view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
@@ -229,9 +264,11 @@ image_label.image = thermometer_image
 image_label.grid(row=0, column=1, rowspan=7, padx=5)
 
 # Define Checkbutton
+rounded_number_variable = IntVar()
 rounded_number_checkbutton = Checkbutton(bottom_frame, text="Rounded number", fg="black", bg=background_colour,
                                          font=("Arial", 11), justify=CENTER, bd=3, selectcolor=checkbox_colour,
-                                         activebackground=background_colour)
+                                         activebackground=background_colour, variable=rounded_number_variable,
+                                         command=check_round)
 rounded_number_checkbutton.grid(row=1, column=1, padx=(25, 75), pady=5)
 
 # End of window
