@@ -1,6 +1,6 @@
 # Kim Schalk
-# 04/03/2022
-# Version 5 - Rounding Checkbox
+# 15/03/2022
+# Version 6 - Valid number
 
 # Import Packages
 from tkinter import *
@@ -11,8 +11,10 @@ background_colour = "#F6B26B"
 button_colour = "#F4CCCC"
 active_button_colour = "#EA9999"
 entry_colour = "#FCE5CD"
+entry_error_colour = "#EA9999"
 checkbox_colour = "#D9D9D9"
 box_colour = "#FCE5CD"
+error_font_colour = "#CC0000"
 
 # Define Window
 root = Tk()
@@ -21,7 +23,6 @@ root.title("Temperature Converter")
 root.configure(bg=background_colour)
 
 # Variable for last convert button pressed
-global last_pressed
 last_pressed = 1
 
 
@@ -107,6 +108,68 @@ When finished press the back button to return to the home window.""")
     information_canvas.config(scrollregion=information_canvas.bbox("all"))
 
 
+# Function to check if number is greater than absolute 0
+def check_absolute_zero(to_check):
+    if to_check == 1:
+        number = float(centigrade_variable.get())
+        if number < -273.15:
+            centigrade_entry.configure(bg=entry_error_colour)
+            instruction_label.configure(text="Too Cold", font=("Montserrat", 12, "bold"), fg=error_font_colour)
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=(35, 5), pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=(40, 20), pady=5)
+            fahrenheit_entry.configure(bg=entry_colour)
+        else:
+            celsius_to_fahrenheit(to_check)
+    if to_check == 2:
+        number = float(fahrenheit_variable.get())
+        if number < -459.67:
+            fahrenheit_entry.configure(bg=entry_error_colour)
+            instruction_label.configure(text="Too Cold", font=("Montserrat", 12, "bold"), fg=error_font_colour)
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=(35, 5), pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=(40, 20), pady=5)
+            centigrade_entry.configure(bg=entry_colour)
+        else:
+            fahrenheit_to_celsius(to_check)
+
+
+# Check whether number entered is valid
+def valid_number(to_check):
+    try:
+        if to_check == 1:
+            number = float(centigrade_variable.get())
+            fahrenheit_entry.configure(bg=entry_colour)
+            centigrade_entry.configure(bg=entry_colour)
+            instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
+                                        font=("Arial", 12, "italic"), fg="black")
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=20, pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=20, pady=5)
+            check_absolute_zero(to_check)
+        if to_check == 2:
+            number = float(fahrenheit_variable.get())
+            fahrenheit_entry.configure(bg=entry_colour)
+            centigrade_entry.configure(bg=entry_colour)
+            instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
+                                        font=("Arial", 12, "italic"), fg="black")
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=20, pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=20, pady=5)
+            check_absolute_zero(to_check)
+    except TclError:
+        if to_check == 1:
+            centigrade_entry.configure(bg=entry_error_colour)
+            fahrenheit_entry.configure(bg=entry_colour)
+            instruction_label.configure(text="Please enter a valid number", font=("Montserrat", 12, "bold"),
+                                        fg=error_font_colour)
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=(40, 20), pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=(40, 20), pady=5)
+        if to_check == 2:
+            fahrenheit_entry.configure(bg=entry_error_colour)
+            centigrade_entry.configure(bg=entry_colour)
+            instruction_label.configure(text="Please enter a valid number", font=("Montserrat", 12, "bold"),
+                                        fg=error_font_colour)
+            instruction_label.grid(row=1, column=0, columnspan=3, padx=(40, 20), pady=5)
+            temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=(40, 20), pady=5)
+
+
 # Celsius to Fahrenheit Function
 def celsius_to_fahrenheit(button):
     global last_pressed
@@ -178,9 +241,9 @@ def check_round():
     check = rounded_number_variable.get()
     if check == 0:
         if last_pressed == 1:
-            celsius_to_fahrenheit(1)
+            check_absolute_zero(1)
         if last_pressed == 2:
-            fahrenheit_to_celsius(2)
+            check_absolute_zero(2)
     if check == 1:
         if last_pressed == 1:
             fahrenheit_variable.set(rounded(fahrenheit_variable.get()))
@@ -238,12 +301,12 @@ fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
 # Define Buttons
 centigrade_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
                                    font=("Arial", 11), activebackground=active_button_colour,
-                                   command=lambda: celsius_to_fahrenheit(1))
+                                   command=lambda: valid_number(1))
 centigrade_convert_button.grid(row=3, column=0, pady=(5, 40), ipadx=2, ipady=2)
 
 fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=button_colour, width=8,
                                    font=("Arial", 11), activebackground=active_button_colour,
-                                   command=lambda: fahrenheit_to_celsius(2))
+                                   command=lambda: valid_number(2))
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
 view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
