@@ -34,6 +34,7 @@ def go_to_help():
     def close_help():
         help_button.config(state=NORMAL)
         help_window.destroy()
+
     # Disable help button
     help_button.config(state=DISABLED)
     # Create help window
@@ -110,9 +111,55 @@ When finished press the back button to return to the home window.""")
 
 
 def go_to_history():
+    def go_to_export():
+        def close_export():
+            export_button.config(state=NORMAL)
+            export_window.destroy()
+
+        export_button.config(state=DISABLED)
+        export_window = Toplevel()
+        export_window.configure(bg=background_colour)
+        export_window.protocol("WM_DELETE_WINDOW", close_export)
+        # Define Labels
+        export_history_label = Label(export_window, text="Export History", fg="black", bg=background_colour,
+                                     font=("Arial", 20, "bold"),
+                                     justify=CENTER)
+        export_history_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+
+        export_information_variable = StringVar()
+        export_information_variable.set(
+            "Type in the desired file name and press export to convert the history to a txt file.")
+        export_information_label = Label(export_window, textvariable=export_information_variable, fg="black",
+                                         bg=background_colour, font=("Arial", 11, "italic"), justify=LEFT,
+                                         wraplength=310)
+        export_information_label.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+
+        # Define Entries and Variables
+        file_name_variable = DoubleVar()
+        file_name_variable.set("")
+        file_name_entry = Entry(export_window, textvariable=file_name_variable, fg="black", bg=entry_colour, width=38,
+                                font=("Arial", 11), justify=LEFT, bd=3)
+        file_name_entry.grid(row=2, column=0, columnspan=2, pady=5, padx=10, ipadx=5, ipady=2)
+
+        # Define Buttons
+        export_file_button = Button(export_window, text="Export", fg="black", bg=button_colour,
+                                    activebackground=active_button_colour, font=("Arial", 11), justify=CENTER, width=10)
+        export_file_button.grid(row=3, column=0, columnspan=2, pady=20, padx=5, ipadx=2, ipady=2)
+
+        back_to_history_button = Button(export_window, text="Back", fg="black", bg=background_colour,
+                                        activebackground=background_colour, font=("Arial", 11, "underline"),
+                                        justify=LEFT, bd=0, command=close_export)
+        back_to_history_button.grid(row=4, column=0, pady=(0, 5), padx=5, sticky="w")
+
+        export_help_button = Button(export_window, text="Help", fg="black", bg=background_colour,
+                                    activebackground=background_colour, font=("Arial", 11, "underline"), justify=RIGHT,
+                                    bd=0)
+        export_help_button.grid(row=4, column=1, pady=(0, 5), padx=5, sticky="e")
+
     def close_history():
         view_history_button.config(state=NORMAL)
         history_window.destroy()
+
     view_history_button.config(state=DISABLED)
     history_window = Toplevel()
     history_window.configure(bg=background_colour)
@@ -144,7 +191,7 @@ def go_to_history():
 
     # Define Buttons
     export_button = Button(history_window, text="Export", fg="black", bg=button_colour, width=8, font=("Arial", 11),
-                           activebackground=active_button_colour)
+                           activebackground=active_button_colour, command=go_to_export)
     export_button.grid(row=2, column=0, pady=(15, 5), padx=30, ipadx=2, ipady=2)
 
     clear_button = Button(history_window, text="Clear", fg="black", bg=button_colour, width=8, font=("Arial", 11),
@@ -235,7 +282,7 @@ def celsius_to_fahrenheit(button):
     check = rounded_number_variable.get()
     centigrade = centigrade_variable.get()
     centigrade = int(centigrade)
-    fahrenheit = (centigrade * 9/5) + 32
+    fahrenheit = (centigrade * 9 / 5) + 32
     # Round or keep unrounded answer
     if check == 0:
         fahrenheit = unrounded(fahrenheit)
@@ -251,7 +298,7 @@ def fahrenheit_to_celsius(button):
     check = rounded_number_variable.get()
     fahrenheit = fahrenheit_variable.get()
     fahrenheit = int(fahrenheit)
-    centigrade = (fahrenheit - 32) * 5/9
+    centigrade = (fahrenheit - 32) * 5 / 9
     # Round or keep unrounded answer
     if check == 0:
         centigrade = unrounded(centigrade)
