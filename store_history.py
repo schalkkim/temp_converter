@@ -165,7 +165,6 @@ def go_to_history():
 
     # Finds out how many items in list and sets the history variables depending on that size
     def history_list_length():
-        print(len(history_list))
         if len(history_list) < 8:
             if len(history_list) < 4:
                 history_information_one.set("\n\n".join(history_list[i] for i in range(0, len(history_list))))
@@ -356,7 +355,7 @@ def unrounded(to_round):
 
 
 def rounded(to_round):
-    number = to_round
+    number = float(to_round)
     number = round(number)
     return number
 
@@ -371,8 +370,12 @@ def check_round():
     if check == 1:
         if last_pressed == 1:
             fahrenheit_variable.set(rounded(fahrenheit_variable.get()))
+            history_string = "{}°C is {}°F".format(centigrade_variable.get(), rounded(fahrenheit_variable.get()))
+            history_list.insert(0, history_string)
         if last_pressed == 2:
             centigrade_variable.set(rounded(centigrade_variable.get()))
+            history_string = "{}°F is {}°C".format(fahrenheit_variable.get(), rounded(centigrade_variable.get()))
+            history_list.insert(0, history_string)
 
 
 # Define Frames
@@ -410,14 +413,14 @@ formula_label = Label(bottom_frame, text="Formula", fg="black", bg=background_co
 formula_label.grid(row=0, column=1, padx=(50, 100))
 
 # Define Entries and Variables
-centigrade_variable = DoubleVar()
-centigrade_variable.set(0)
+centigrade_variable = StringVar()
+centigrade_variable.set("0")
 centigrade_entry = Entry(middle_frame, textvariable=centigrade_variable, width=9, bg=entry_colour, fg="black",
                          font=("Arial", 11), justify=CENTER, bd=3)
 centigrade_entry.grid(row=2, column=0, pady=5, ipady=5, ipadx=5)
 
-fahrenheit_variable = DoubleVar()
-fahrenheit_variable.set(0)
+fahrenheit_variable = StringVar()
+fahrenheit_variable.set("0")
 fahrenheit_entry = Entry(middle_frame, textvariable=fahrenheit_variable, width=9, bg=entry_colour, fg="black",
                          font=("Arial", 11), justify=CENTER, bd=3)
 fahrenheit_entry.grid(row=2, column=2, pady=5, ipady=5, ipadx=5)
