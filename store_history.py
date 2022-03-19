@@ -26,6 +26,9 @@ root.configure(bg=background_colour)
 # Variable for last convert button pressed
 last_pressed = 1
 
+# List to store history
+history_list = []
+
 
 # Define Functions
 # Help Window Function
@@ -160,6 +163,19 @@ def go_to_history():
         view_history_button.config(state=NORMAL)
         history_window.destroy()
 
+    # Finds out how many items in list and sets the history variables depending on that size
+    def history_list_length():
+        print(len(history_list))
+        if len(history_list) < 8:
+            if len(history_list) < 4:
+                history_information_one.set("\n\n".join(history_list[i] for i in range(0, len(history_list))))
+            else:
+                history_information_one.set("\n\n".join(history_list[i] for i in range(0, 4)))
+                history_information_two.set("\n\n".join(history_list[i] for i in range(4, len(history_list))))
+        else:
+            history_information_one.set("\n\n".join(history_list[i] for i in range(0, 4)))
+            history_information_two.set("\n\n".join(history_list[i] for i in range(4, 8)))
+
     view_history_button.config(state=DISABLED)
     history_window = Toplevel()
     history_window.configure(bg=background_colour)
@@ -170,13 +186,7 @@ def go_to_history():
     history_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
     history_information_one = StringVar()
-    history_information_one.set("""45*C is 23*F
-
-    56*C is 6*F
-
-    78*F is 456*C
-
-    541.89*C is 341.78*F""")
+    history_information_one.set("")
 
     history_information_one_label = Label(history_window, textvariable=history_information_one, fg="black",
                                           bg=background_colour, font=("Arial", 11), wraplength=200)
@@ -213,6 +223,7 @@ def go_to_history():
     line_style.configure("Line.TSeparator", background="black")
     line = ttk.Separator(history_window, orient=VERTICAL, style="Line.TSeparator")
     line.grid(row=1, column=1, sticky="ns")
+    history_list_length()
 
 
 # Function to check if number is greater than absolute 0
@@ -286,8 +297,12 @@ def celsius_to_fahrenheit(button):
     # Round or keep unrounded answer
     if check == 0:
         fahrenheit = unrounded(fahrenheit)
+        history_string = "{}°C is {}°F".format(centigrade, fahrenheit)
+        history_list.insert(0, history_string)
     if check == 1:
         fahrenheit = rounded(fahrenheit)
+        history_string = "{}°C is {}°F".format(centigrade, fahrenheit)
+        history_list.insert(0, history_string)
     fahrenheit_variable.set(fahrenheit)
 
 
@@ -302,8 +317,12 @@ def fahrenheit_to_celsius(button):
     # Round or keep unrounded answer
     if check == 0:
         centigrade = unrounded(centigrade)
+        history_string = "{}°F is {}°C".format(fahrenheit, centigrade)
+        history_list.insert(0, history_string)
     if check == 1:
         centigrade = rounded(centigrade)
+        history_string = "{}°F is {}°C".format(fahrenheit, centigrade)
+        history_list.insert(0, history_string)
     centigrade_variable.set(centigrade)
 
 
