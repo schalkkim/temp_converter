@@ -4,6 +4,7 @@
 
 # Import Packages
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 
 # Colours for program
@@ -108,6 +109,65 @@ When finished press the back button to return to the home window.""")
     information_canvas.config(scrollregion=information_canvas.bbox("all"))
 
 
+def go_to_history():
+    def close_history():
+        view_history_button.config(state=NORMAL)
+        history_window.destroy()
+    view_history_button.config(state=DISABLED)
+    history_window = Toplevel()
+    history_window.configure(bg=background_colour)
+    history_window.protocol("WM_DELETE_WINDOW", close_history)
+    # Define Labels
+    history_label = Label(history_window, text="History", fg="black", bg=background_colour, font=("Arial", 20, "bold"),
+                          justify=CENTER)
+    history_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+
+    history_information_one = StringVar()
+    history_information_one.set("""45*C is 23*F
+
+    56*C is 6*F
+
+    78*F is 456*C
+
+    541.89*C is 341.78*F""")
+
+    history_information_one_label = Label(history_window, textvariable=history_information_one, fg="black",
+                                          bg=background_colour, font=("Arial", 11), wraplength=200)
+    history_information_one_label.grid(row=1, column=0, padx=5, pady=5)
+
+    history_information_two = StringVar()
+    history_information_two.set("")
+
+    history_information_two_label = Label(history_window, textvariable=history_information_two, fg="black",
+                                          bg=background_colour, font=("Arial", 11), wraplength=200)
+    history_information_two_label.grid(row=1, column=2, padx=5, pady=5)
+
+    # Define Buttons
+    export_button = Button(history_window, text="Export", fg="black", bg=button_colour, width=8, font=("Arial", 11),
+                           activebackground=active_button_colour)
+    export_button.grid(row=2, column=0, pady=(15, 5), padx=30, ipadx=2, ipady=2)
+
+    clear_button = Button(history_window, text="Clear", fg="black", bg=button_colour, width=8, font=("Arial", 11),
+                          activebackground=active_button_colour)
+    clear_button.grid(row=2, column=2, pady=(15, 5), padx=30, ipadx=2, ipady=2)
+
+    back_button = Button(history_window, text="Back", fg="black", bg=background_colour, bd=0,
+                         font=("Arial", 11, "underline"), justify=LEFT, activebackground=background_colour,
+                         command=close_history)
+    back_button.grid(row=3, column=0, pady=5, padx=(5, 100))
+
+    history_help_button = Button(history_window, text="Help", fg="black", bg=background_colour, bd=0,
+                                 font=("Arial", 11, "underline"), justify=RIGHT, activebackground=background_colour)
+    history_help_button.grid(row=3, column=2, pady=5, padx=(100, 5))
+
+    # Add line as a separator
+    # Style separator
+    line_style = ttk.Style()
+    line_style.configure("Line.TSeparator", background="black")
+    line = ttk.Separator(history_window, orient=VERTICAL, style="Line.TSeparator")
+    line.grid(row=1, column=1, sticky="ns")
+
+
 # Function to check if number is greater than absolute 0
 def check_absolute_zero(to_check):
     if to_check == 1:
@@ -136,7 +196,6 @@ def check_absolute_zero(to_check):
 def valid_number(to_check):
     try:
         if to_check == 1:
-            number = float(centigrade_variable.get())
             fahrenheit_entry.configure(bg=entry_colour)
             centigrade_entry.configure(bg=entry_colour)
             instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
@@ -145,7 +204,6 @@ def valid_number(to_check):
             temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=20, pady=5)
             check_absolute_zero(to_check)
         if to_check == 2:
-            number = float(fahrenheit_variable.get())
             fahrenheit_entry.configure(bg=entry_colour)
             centigrade_entry.configure(bg=entry_colour)
             instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
@@ -310,7 +368,8 @@ fahrenheit_convert_button = Button(middle_frame, text="Convert", fg="black", bg=
 fahrenheit_convert_button.grid(row=3, column=2, pady=(5, 40), ipadx=2, ipady=2)
 
 view_history_button = Button(bottom_frame, text="View History", fg="black", bg=background_colour, bd=0,
-                             font=("Arial", 11, "underline"), justify=LEFT, activebackground=background_colour)
+                             font=("Arial", 11, "underline"), justify=LEFT, activebackground=background_colour,
+                             command=go_to_history)
 view_history_button.grid(row=2, column=0, padx=(10, 2), pady=(5, 10))
 
 help_button = Button(bottom_frame, text="Help", fg="black", bg=background_colour, bd=0, font=("Arial", 11, "underline"),
