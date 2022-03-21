@@ -1,6 +1,6 @@
 # Kim Schalk
 # 15/03/2022
-# Version 10 - Clear History Function
+# Version 11 - Create history file
 
 # Import Packages
 from tkinter import *
@@ -115,6 +115,13 @@ When finished press the back button to return to the home window.""")
 
 def go_to_history():
     def go_to_export():
+        # Exports history as a text file
+        def create_history_file():
+            file_name = "{}.txt".format(file_name_variable.get())
+            history_file = open(file_name, "w")
+            history_file.write("\n".join(history_list))
+            history_file.close()
+
         def close_export():
             export_button.config(state=NORMAL)
             export_window.destroy()
@@ -138,7 +145,7 @@ def go_to_history():
         export_information_label.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
         # Define Entries and Variables
-        file_name_variable = DoubleVar()
+        file_name_variable = StringVar()
         file_name_variable.set("")
         file_name_entry = Entry(export_window, textvariable=file_name_variable, fg="black", bg=entry_colour, width=38,
                                 font=("Arial", 11), justify=LEFT, bd=3)
@@ -146,7 +153,8 @@ def go_to_history():
 
         # Define Buttons
         export_file_button = Button(export_window, text="Export", fg="black", bg=button_colour,
-                                    activebackground=active_button_colour, font=("Arial", 11), justify=CENTER, width=10)
+                                    activebackground=active_button_colour, font=("Arial", 11), justify=CENTER, width=10,
+                                    command=create_history_file)
         export_file_button.grid(row=3, column=0, columnspan=2, pady=20, padx=5, ipadx=2, ipady=2)
 
         back_to_history_button = Button(export_window, text="Back", fg="black", bg=background_colour,
