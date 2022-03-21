@@ -1,6 +1,6 @@
 # Kim Schalk
 # 15/03/2022
-# Version 9 - Store History
+# Version 10 - Clear History Function
 
 # Import Packages
 from tkinter import *
@@ -168,12 +168,18 @@ def go_to_history():
         if len(history_list) < 8:
             if len(history_list) < 4:
                 history_information_one.set("\n\n".join(history_list[i] for i in range(0, len(history_list))))
+                history_information_two.set("")
             else:
                 history_information_one.set("\n\n".join(history_list[i] for i in range(0, 4)))
                 history_information_two.set("\n\n".join(history_list[i] for i in range(4, len(history_list))))
         else:
             history_information_one.set("\n\n".join(history_list[i] for i in range(0, 4)))
             history_information_two.set("\n\n".join(history_list[i] for i in range(4, 8)))
+
+    def clear_history():
+        global history_list
+        history_list = []
+        history_list_length()
 
     view_history_button.config(state=DISABLED)
     history_window = Toplevel()
@@ -204,7 +210,7 @@ def go_to_history():
     export_button.grid(row=2, column=0, pady=(15, 5), padx=30, ipadx=2, ipady=2)
 
     clear_button = Button(history_window, text="Clear", fg="black", bg=button_colour, width=8, font=("Arial", 11),
-                          activebackground=active_button_colour)
+                          activebackground=active_button_colour, command=clear_history)
     clear_button.grid(row=2, column=2, pady=(15, 5), padx=30, ipadx=2, ipady=2)
 
     back_button = Button(history_window, text="Back", fg="black", bg=background_colour, bd=0,
@@ -253,6 +259,7 @@ def check_absolute_zero(to_check):
 def valid_number(to_check):
     try:
         if to_check == 1:
+            number = float(centigrade_variable.get())
             fahrenheit_entry.configure(bg=entry_colour)
             centigrade_entry.configure(bg=entry_colour)
             instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
@@ -261,6 +268,7 @@ def valid_number(to_check):
             temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=20, pady=5)
             check_absolute_zero(to_check)
         if to_check == 2:
+            number = float(fahrenheit_variable.get())
             fahrenheit_entry.configure(bg=entry_colour)
             centigrade_entry.configure(bg=entry_colour)
             instruction_label.configure(text="Type in a number and push the 'convert' button to convert it.",
@@ -268,7 +276,7 @@ def valid_number(to_check):
             instruction_label.grid(row=1, column=0, columnspan=3, padx=20, pady=5)
             temperature_converter_label.grid(row=0, column=0, columnspan=3, padx=20, pady=5)
             check_absolute_zero(to_check)
-    except TclError:
+    except ValueError:
         if to_check == 1:
             centigrade_entry.configure(bg=entry_error_colour)
             fahrenheit_entry.configure(bg=entry_colour)
