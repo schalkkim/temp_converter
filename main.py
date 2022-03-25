@@ -1,6 +1,6 @@
 # Kim Schalk
 # 15/03/2022
-# Version 11 - Create history file
+# Version 12 - Error handling
 
 # Import Packages
 from tkinter import *
@@ -32,19 +32,19 @@ history_list = []
 
 # Define Functions
 # Help Window Function
-def go_to_help():
+def go_to_help(button):
     # Close help window function and enables help button
-    def close_help():
-        help_button.config(state=NORMAL)
+    def close_help(button):
+        button.config(state=NORMAL)
         help_window.destroy()
 
     # Disable help button
-    help_button.config(state=DISABLED)
+    button.config(state=DISABLED)
     # Create help window
     help_window = Toplevel()
     help_window.configure(bg=background_colour)
     # Closes help window and enables help button when X is pressed
-    help_window.protocol("WM_DELETE_WINDOW", close_help)
+    help_window.protocol("WM_DELETE_WINDOW", lambda: close_help(button))
     # Define Frames
     # Groups the help information
     information_frame = Frame(help_window, bg=box_colour, bd=3)
@@ -100,7 +100,7 @@ When finished press the back button to return to the home window.""")
     # Define Button
     back_button = Button(help_window, text="Back", fg="black", bg=background_colour, bd=0,
                          font=("Arial", 11, "underline"), justify=LEFT, activebackground=background_colour,
-                         command=close_help)
+                         command=lambda: close_help(button))
     back_button.grid(row=2, column=0, padx=(10, 285), pady=(5, 10))
 
     # Allows resizing of labels
@@ -164,7 +164,7 @@ def go_to_history():
 
         export_help_button = Button(export_window, text="Help", fg="black", bg=background_colour,
                                     activebackground=background_colour, font=("Arial", 11, "underline"), justify=RIGHT,
-                                    bd=0)
+                                    bd=0, command=lambda: go_to_help(export_help_button))
         export_help_button.grid(row=4, column=1, pady=(0, 5), padx=5, sticky="e")
 
     def close_history():
@@ -227,7 +227,8 @@ def go_to_history():
     back_button.grid(row=3, column=0, pady=5, padx=(5, 100))
 
     history_help_button = Button(history_window, text="Help", fg="black", bg=background_colour, bd=0,
-                                 font=("Arial", 11, "underline"), justify=RIGHT, activebackground=background_colour)
+                                 font=("Arial", 11, "underline"), justify=RIGHT, activebackground=background_colour,
+                                 command=lambda: go_to_help(history_help_button))
     history_help_button.grid(row=3, column=2, pady=5, padx=(100, 5))
 
     # Add line as a separator
@@ -458,7 +459,7 @@ view_history_button = Button(bottom_frame, text="View History", fg="black", bg=b
 view_history_button.grid(row=2, column=0, padx=(10, 2), pady=(5, 10))
 
 help_button = Button(bottom_frame, text="Help", fg="black", bg=background_colour, bd=0, font=("Arial", 11, "underline"),
-                     justify=RIGHT, activebackground=background_colour, command=go_to_help)
+                     justify=RIGHT, activebackground=background_colour, command=lambda: go_to_help(help_button))
 help_button.grid(row=2, column=2, padx=(2, 10), pady=(5, 10))
 
 # Define Image and format it
